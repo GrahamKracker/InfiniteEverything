@@ -52,7 +52,6 @@ public class Main : BloonsTD6Mod
 
         if (GameObject.Find("CashInfo") is not null)
         {
-            //MelonLogger.Msg(CommonForegroundScreen.instance.monkeyMoney.transform.parent.gameObject.name);
             CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").FindChild("Text").gameObject.GetComponent<NK_TextMeshProUGUI>().text =  "$" + Infinitetxt;
             CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").gameObject.GetComponent<MonkeyMoney>().enabled = false;
         }
