@@ -34,7 +34,14 @@ public class Main : BloonsTD6Mod
     public override void OnUpdate()
     {
         base.OnUpdate();
-        
+
+        try
+        {
+            MainMenuUI.GetXpBarText().text = "0/20,000,000";
+            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("LvlTxt").gameObject.GetComponent<NK_TextMeshProUGUI>().text = "999";
+            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("XpBar").FindChild("Mask").gameObject.SetActive(false);
+        }
+        catch{}
         try{
             if (MainMenuUI.GetSettingsButton() is not null)
             {
@@ -83,6 +90,7 @@ public class Main : BloonsTD6Mod
                 catch{}
             }
         }
+        
         Thread.Sleep(Random.Range(0, 100));
     }
     
