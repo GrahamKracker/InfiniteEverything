@@ -1,11 +1,15 @@
 ﻿using System.Threading;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Extensions;
+using BTD_Mod_Helper.UI.BTD6;
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppAssets.Scripts.Unity.UI_New;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame.Stats;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.MonkeySelect;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
+using Il2CppAssets.Scripts.Unity.UI_New.TrophyStore;
 using Il2CppAssets.Scripts.Unity.UI_New.Upgrade;
 using InfiniteEverything;
 using MelonLoader;
@@ -30,15 +34,24 @@ public class Main : BloonsTD6Mod
     public override void OnUpdate()
     {
         base.OnUpdate();
-        if (GameObject.Find("Flag") is not null)
-            GameObject.Find("Flag").SetActive(true);
+        
+        try{
+            if (MainMenuUI.GetSettingsButton() is not null)
+            {
+                MainMenuUI.GetSettingsButton().gameObject.transform.parent.FindChild("Flag").gameObject.SetActive(true);
+            }
+        }
+        catch{}
+
         if (GameObject.Find("CashInfo") is not null)
         {
-            /*GameObject.Find("CashInfo").GetComponent<MonkeyMoney>()
-                .enabled = false;*/
-            GameObject.Find("CashInfo").transform.FindChild("Text").GetComponent<NK_TextMeshProUGUI>().text =
-                "$" + Infinitetxt;
+            //MelonLogger.Msg(CommonForegroundScreen.instance.monkeyMoney.transform.parent.gameObject.name);
+            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").FindChild("Text").gameObject.GetComponent<NK_TextMeshProUGUI>().text =  "$" + Infinitetxt;
+            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").gameObject.GetComponent<MonkeyMoney>().enabled = false;
         }
+
+        if (GameObject.Find("TrophiesQtyTxt"))
+            GameObject.Find("TrophiesQtyTxt").GetComponent<NK_TextMeshProUGUI>().text = Infinitetxt;
 
         if (GameObject.Find("PointsTxt") is not null)
             GameObject.Find("PointsTxt").GetComponent<NK_TextMeshProUGUI>().text = Infinitetxtwithcommas;
@@ -50,7 +63,6 @@ public class Main : BloonsTD6Mod
             var towers = InGame.instance.bridge.GetAllTowers();
             if (towers is null || towers.Count == 0)
                 return;
-            
             try{InGame.instance.SellTowers(InGame.instance.GetTowers());}
             catch{}
             
@@ -70,12 +82,21 @@ public class Main : BloonsTD6Mod
                 try{InGame.instance.SellTower(towers[i]);}
                 catch{}
             }
-            
         }
-        
         Thread.Sleep(Random.Range(0, 100));
     }
-
+    
+    [HarmonyPatch(typeof(TrophyStoreScreen), nameof(TrophyStoreScreen.Open))]
+    public static class TrophyStoreScreen_Open
+    {
+        [HarmonyPostfix]
+        static void Postfix(TrophyStoreScreen __instance)
+        {
+            __instance.trophyCount.m_text = Infinitetxt;
+            __instance.trophyCount.text = Infinitetxt;
+        }
+    }
+    
     [HarmonyPatch(typeof(MonkeySelectMenu), nameof(MonkeySelectMenu.Open))]
     public static class MonkeySelectMenu_Open
     {
