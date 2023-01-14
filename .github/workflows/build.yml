@@ -11,7 +11,6 @@ on:
 
 env:
   PROJECT_NAME: InfiniteEverything
-  MOD_HELPER_BRANCH: 3.0_Features
   MELONLOADER_BRANCH: alpha-development
   
   MOD_HELPER_NAME: Btd6ModHelper
