@@ -24,13 +24,6 @@ namespace InfiniteEverything;
 
 public class Main : BloonsTD6Mod
 {
-    public override void OnApplicationStart()
-    {
-        base.OnApplicationStart();
-        MelonLogger.Msg("InfiniteEverything Has Loaded");
-    }
-
-
     public override void OnUpdate()
     {
         base.OnUpdate();
