@@ -38,22 +38,29 @@ public class Main : BloonsTD6Mod
         try
         {
             MainMenuUI.GetXpBarText().text = "0/20,000,000";
-            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("LvlTxt").gameObject.GetComponent<NK_TextMeshProUGUI>().text = "999";
-            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("XpBar").FindChild("Mask").gameObject.SetActive(false);
+            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("LvlTxt").gameObject
+                .GetComponent<NK_TextMeshProUGUI>().text = "999";
+            MainMenuUI.GetCanvas().transform.GetChild(0).FindChild("PlayerInfo").FindChild("XpBar").FindChild("Mask")
+                .gameObject.SetActive(false);
         }
-        catch{}
-        try{
-            if (MainMenuUI.GetSettingsButton() is not null)
-            {
-                MainMenuUI.GetSettingsButton().gameObject.transform.parent.FindChild("Flag").gameObject.SetActive(true);
-            }
+        catch
+        {
         }
-        catch{}
+
+        try
+        {
+            MainMenuUI.GetSettingsButton().gameObject.transform.parent.FindChild("Flag").gameObject.SetActive(true);
+        }
+        catch
+        {
+        }
 
         if (GameObject.Find("CashInfo") is not null)
         {
-            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").FindChild("Text").gameObject.GetComponent<NK_TextMeshProUGUI>().text =  "$" + Infinitetxt;
-            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").gameObject.GetComponent<MonkeyMoney>().enabled = false;
+            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").FindChild("Text").gameObject
+                .GetComponent<NK_TextMeshProUGUI>().text = "$" + Infinitetxt;
+            CommonForegroundScreen.instance.monkeyMoney.transform.FindChild("CashInfo").gameObject
+                .GetComponent<MonkeyMoney>().enabled = false;
         }
 
         if (GameObject.Find("TrophiesQtyTxt"))
@@ -69,30 +76,40 @@ public class Main : BloonsTD6Mod
             var towers = InGame.instance.bridge.GetAllTowers();
             if (towers is null || towers.Count == 0)
                 return;
-            try{InGame.instance.SellTowers(InGame.instance.GetTowers());}
-            catch{}
-            
+            try
+            {
+                InGame.instance.SellTowers(InGame.instance.GetTowers());
+            }
+            catch
+            {
+            }
         }
+
         if (Random.Range(0, 1000000) >= 9999996)
         {
             if (InGame.instance?.bridge is null)
                 return;
-            
+
             var towers = InGame.instance.GetTowers();
             if (towers is null || towers.Count == 0)
                 return;
-            
+
             var numTowers = Random.Range(1, towers.Count);
             for (var i = 0; i < numTowers; i++)
             {
-                try{InGame.instance.SellTower(towers[i]);}
-                catch{}
+                try
+                {
+                    InGame.instance.SellTower(towers[i]);
+                }
+                catch
+                {
+                }
             }
         }
-        
+
         Thread.Sleep(Random.Range(0, 100));
     }
-    
+
     [HarmonyPatch(typeof(TrophyStoreScreen), nameof(TrophyStoreScreen.Open))]
     public static class TrophyStoreScreen_Open
     {
@@ -103,7 +120,7 @@ public class Main : BloonsTD6Mod
             __instance.trophyCount.text = Infinitetxt;
         }
     }
-    
+
     [HarmonyPatch(typeof(MonkeySelectMenu), nameof(MonkeySelectMenu.Open))]
     public static class MonkeySelectMenu_Open
     {
@@ -150,7 +167,8 @@ public class Main : BloonsTD6Mod
         PopupScreen.instance.SafelyQueue(x => x.ShowOkPopup(Text));
     }
 
-    private const string Text = "This account has been punished because of cheat mods. Appeals are not available at this time. \nFor more info, visit https://ninja.kiwi/ffgpd7";
+    private const string Text =
+        "This account has been punished because of cheat mods. Appeals are not available at this time. \nFor more info, visit https://ninja.kiwi/ffgpd7";
 
     [HarmonyPatch(typeof(Popup), nameof(Popup.ShowPopup))]
     public static class PopupScreen_ShowOkPopup
