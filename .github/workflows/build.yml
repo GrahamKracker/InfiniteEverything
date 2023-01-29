@@ -18,7 +18,8 @@ env:
 
 jobs:
   build:
-    
+    permissions:
+      actions: write
     runs-on: ubuntu-latest
 
     steps:
